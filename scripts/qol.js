@@ -55,7 +55,7 @@ const undetect = (element, event, func) =>{
 
 const style = (element, styletext) => {
     element.style.cssText = styletext;
-}
+} //stylesafe: element.style.exampleAttribute = "value"
 
 const attribs = (element, attribList, values) => {
     attribList.map((attrib,index) => {

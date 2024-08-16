@@ -20,15 +20,19 @@ function App() {
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 var _qol = require("./scripts/qol.js");
 var _App = _interopRequireDefault(require("./components/App.jsx"));
-var _extensionQol = require("./scripts/extension-qol.js");
+var _extQol = require("./scripts/ext-qol.js");
 var root = (0, _qol.create)("div");
-(0, _qol.write)(root, "weiuhselkdls");
-(0, _qol.style)(root, "\n    font-size:200px;    \n");
 (0, _qol.render)(document.body, root);
-(0, _extensionQol.injectReact)(_App["default"], root);
-console.log("done");
+(0, _extQol.injectReact)(_App["default"], root);
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  console.log(message);
+  if (message.message == "change_color") {
+    //{message, color}
+    document.body.style.backgroundColor = message.color;
+  }
+});
 
-},{"./components/App.jsx":1,"./scripts/extension-qol.js":20,"./scripts/qol.js":21,"@babel/runtime/helpers/interopRequireDefault":3}],3:[function(require,module,exports){
+},{"./components/App.jsx":1,"./scripts/ext-qol.js":20,"./scripts/qol.js":21,"@babel/runtime/helpers/interopRequireDefault":3}],3:[function(require,module,exports){
 function _interopRequireDefault(e) {
   return e && e.__esModule ? e : {
     "default": e
@@ -35526,7 +35530,6 @@ exports.injectReact = injectReact;
 var _react = _interopRequireDefault(require("react"));
 var _client = _interopRequireDefault(require("react-dom/client"));
 var _jsxRuntime = require("react/jsx-runtime");
-console.log("huh??");
 function injectReact(Component, root_ele) {
   _client["default"].createRoot(root_ele).render( /*#__PURE__*/(0, _jsxRuntime.jsx)(_react["default"].StrictMode, {
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)(Component, {})
@@ -35588,7 +35591,8 @@ var undetect = exports.undetect = function undetect(element, event, func) {
 };
 var style = exports.style = function style(element, styletext) {
   element.style.cssText = styletext;
-};
+}; //stylesafe: element.style.exampleAttribute = "value"
+
 var attribs = exports.attribs = function attribs(element, attribList, values) {
   attribList.map(function (attrib, index) {
     element.setAttribute(attrib, values[index]);

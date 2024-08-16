@@ -1,14 +1,14 @@
 import { create, render, style, write } from "./scripts/qol.js";
 import App from './components/App.jsx';
-import { injectReact } from "./scripts/extension-qol.js";
+import { injectReact } from "./scripts/ext-qol.js";
 
 const root = create("div")
-write(root, "weiuhselkdls")
-style(root, `
-    font-size:200px;    
-`)
-
 render(document.body, root)
 injectReact(App, root)
 
-console.log("done")
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+    console.log(message)
+    if (message.message == "change_color"){ //{message, color}
+        document.body.style.backgroundColor = message.color
+    }
+  });
