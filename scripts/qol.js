@@ -14,15 +14,26 @@ const create = (element) => {
     return document.createElement(element);
 }
 
-const addClass = (element, classlist) =>{
-        classlist.forEach(clas => {element.classList.add(clas)});
+const addClass = (element, clas) =>{
+        element.classList.add(clas);
+}
+
+const addClasses = (element, classlist) =>{
+    classlist.forEach(clas => {element.classList.add(clas)});
 }
 
 const hasClass = (element, clas) => {
     return element.classList.contains(clas);
 }
 
-const remClass = (element, classlist) =>{
+
+const remClass = (element, clas) =>{
+        if (hasClass(element, clas)){
+            element.classList.remove(clas)
+        }
+}
+
+const remClasses = (element, classlist) =>{
     classlist.forEach(clas => {
         if (hasClass(element, clas)){
             element.classList.remove(clas)
@@ -71,9 +82,9 @@ const isElement = function($obj){
     }
 }
 
-const moveTo = (element, x, y, size) => {
-    element.style.top = y-(size/2) +"px";
-    element.style.left = x-(size/2) +"px";
+const moveTo = (element, x, y) => {
+    element.style.top = y+"px";
+    element.style.left = x+"px";
 }
 
 const getPos = (evt, myrect) =>{
@@ -143,4 +154,4 @@ const getPosEle = (element, size) => {
     }
 }
 
-export {render, remove, create, addClass, hasClass, remClass, find, findAll, write, read, detect, undetect, style, attribs, isElement}
+export {render, remove, create, addClass, addClasses,remClasses, hasClass, remClass, find, findAll, write, read, detect, undetect, style, attribs, isElement, moveTo}

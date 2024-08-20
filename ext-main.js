@@ -1,14 +1,25 @@
 import { create, render, style, write } from "./scripts/qol.js";
 import App from './components/App.jsx';
-import { injectReact } from "./scripts/ext-qol.js";
+import { generateRoot, injectReact, removeReact } from "./scripts/ext-qol.js";
+import Popup from "./components/Popup.jsx";
+import './styles/Root.css'
 
-const root = create("div")
+const root = generateRoot()
 render(document.body, root)
-injectReact(App, root)
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     console.log(message)
     if (message.message == "change_color"){ //{message, color}
         document.body.style.backgroundColor = message.color
     }
-  });
+    else if (message.message == "toggle_popup"){ //{message, popup_visible}
+        if(message.popup_visible){
+            injectReact(Popup, root,{startx:50,starty:100})
+        }
+        else{
+            removeReact()
+        }
+    }
+});
+
+export {root}

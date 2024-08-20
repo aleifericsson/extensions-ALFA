@@ -7,60 +7,153 @@ Object.defineProperty(exports, "__esModule", {
 exports["default"] = App;
 require("../styles/App.css");
 var _jsxRuntime = require("react/jsx-runtime");
-function App() {
+function App(_ref) {
+  var props = _ref.props;
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     className: "bruh",
     children: "bruh"
   });
 }
 
-},{"../styles/App.css":22,"react/jsx-runtime":17}],2:[function(require,module,exports){
+},{"../styles/App.css":32,"react/jsx-runtime":25}],2:[function(require,module,exports){
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = GenMenu;
+require("../styles/Popup.css");
+var _jsxRuntime = require("react/jsx-runtime");
+function GenMenu(_ref) {
+  var props = _ref.props;
+  //props: {startx, starty}
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+    className: "popup",
+    style: {
+      left: props.startx,
+      top: props.starty
+    },
+    children: "GenMenu"
+  });
+}
+
+},{"../styles/Popup.css":33,"react/jsx-runtime":25}],3:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = Popup;
+var _extMain = require("../ext-main");
+var _extQol = require("../scripts/ext-qol");
 require("../styles/Popup.css");
+var _GenMenu = _interopRequireDefault(require("./GenMenu.jsx"));
 var _jsxRuntime = require("react/jsx-runtime");
 function Popup(_ref) {
-  var startx = _ref.startx,
-    starty = _ref.starty;
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-    className: "popup",
-    children: "popup"
-  });
-}
+  var props = _ref.props;
+  //props: {startx, starty}
 
-},{"../styles/Popup.css":23,"react/jsx-runtime":17}],3:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = Settings;
-var _jsxRuntime = require("react/jsx-runtime");
-function Settings() {
-  var changeBackground = function changeBackground() {
-    chrome.tabs.query({
-      active: true,
-      currentWindow: true
-    }, function (tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, {
-        message: "change_color",
-        color: "#BADA55"
-      });
+  var openGenMenu = function openGenMenu() {
+    (0, _extQol.injectReact)(_GenMenu["default"], _extMain.root, {
+      startx: 50,
+      starty: 100
     });
   };
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+    className: "popup",
+    style: {
+      left: props.startx,
+      top: props.starty
+    },
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
-      onClick: changeBackground,
-      children: "Hey"
+      onClick: openGenMenu,
+      children: "Generate with AI?"
     })
   });
 }
 
-},{"react/jsx-runtime":17}],4:[function(require,module,exports){
+},{"../ext-main":5,"../scripts/ext-qol":30,"../styles/Popup.css":33,"./GenMenu.jsx":2,"@babel/runtime/helpers/interopRequireDefault":9,"react/jsx-runtime":25}],4:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = Settings;
+var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
+var _react = require("react");
+var _extQol = require("../scripts/ext-qol");
+var _jsxRuntime = require("react/jsx-runtime");
+function Settings(_ref) {
+  var props = _ref.props;
+  var _useState = (0, _react.useState)(false),
+    _useState2 = (0, _slicedToArray2["default"])(_useState, 2),
+    popup_visible = _useState2[0],
+    set_visible = _useState2[1];
+  var changeBackground = function changeBackground() {
+    return (0, _extQol.sendMessage)({
+      message: "change_color",
+      color: "#BADA55"
+    });
+  };
+  var togglePopup = function togglePopup(event) {
+    set_visible(!popup_visible);
+    (0, _extQol.sendMessage)({
+      message: "toggle_popup",
+      popup_visible: !popup_visible
+    });
+  };
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+      onClick: changeBackground,
+      children: "Hey"
+    }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("label", {
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+        type: "checkbox",
+        checked: popup_visible,
+        onChange: togglePopup
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+        children: popup_visible ? 'Hide Popup' : 'Show Popup'
+      })]
+    })]
+  });
+}
+
+},{"../scripts/ext-qol":30,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/helpers/slicedToArray":12,"react":24,"react/jsx-runtime":25}],5:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.root = void 0;
+var _qol = require("./scripts/qol.js");
+var _App = _interopRequireDefault(require("./components/App.jsx"));
+var _extQol = require("./scripts/ext-qol.js");
+var _Popup = _interopRequireDefault(require("./components/Popup.jsx"));
+require("./styles/Root.css");
+var root = exports.root = (0, _extQol.generateRoot)();
+(0, _qol.render)(document.body, root);
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  console.log(message);
+  if (message.message == "change_color") {
+    //{message, color}
+    document.body.style.backgroundColor = message.color;
+  } else if (message.message == "toggle_popup") {
+    //{message, popup_visible}
+    if (message.popup_visible) {
+      (0, _extQol.injectReact)(_Popup["default"], root, {
+        startx: 50,
+        starty: 100
+      });
+    } else {
+      (0, _extQol.removeReact)();
+    }
+  }
+});
+
+},{"./components/App.jsx":1,"./components/Popup.jsx":3,"./scripts/ext-qol.js":30,"./scripts/qol.js":31,"./styles/Root.css":34,"@babel/runtime/helpers/interopRequireDefault":9}],6:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -70,18 +163,83 @@ var _App = _interopRequireDefault(require("./components/App.jsx"));
 var _Popup = _interopRequireDefault(require("./components/Popup.jsx"));
 var _Settings = _interopRequireDefault(require("./components/Settings.jsx"));
 var _jsxRuntime = require("react/jsx-runtime");
-_client["default"].createRoot(document.getElementById('react-root')).render( /*#__PURE__*/(0, _jsxRuntime.jsxs)(_react["default"].StrictMode, {
-  children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_App["default"], {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Popup["default"], {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Settings["default"], {})]
+_client["default"].createRoot(document.getElementById('react-root')).render( /*#__PURE__*/(0, _jsxRuntime.jsx)(_react["default"].StrictMode, {
+  children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Settings["default"], {})
 }));
 
-},{"./components/App.jsx":1,"./components/Popup.jsx":2,"./components/Settings.jsx":3,"@babel/runtime/helpers/interopRequireDefault":5,"react":16,"react-dom/client":10,"react/jsx-runtime":17}],5:[function(require,module,exports){
+},{"./components/App.jsx":1,"./components/Popup.jsx":3,"./components/Settings.jsx":4,"@babel/runtime/helpers/interopRequireDefault":9,"react":24,"react-dom/client":18,"react/jsx-runtime":25}],7:[function(require,module,exports){
+function _arrayLikeToArray(r, a) {
+  (null == a || a > r.length) && (a = r.length);
+  for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
+  return n;
+}
+module.exports = _arrayLikeToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
+},{}],8:[function(require,module,exports){
+function _arrayWithHoles(r) {
+  if (Array.isArray(r)) return r;
+}
+module.exports = _arrayWithHoles, module.exports.__esModule = true, module.exports["default"] = module.exports;
+},{}],9:[function(require,module,exports){
 function _interopRequireDefault(e) {
   return e && e.__esModule ? e : {
     "default": e
   };
 }
 module.exports = _interopRequireDefault, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{}],6:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
+function _iterableToArrayLimit(r, l) {
+  var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
+  if (null != t) {
+    var e,
+      n,
+      i,
+      u,
+      a = [],
+      f = !0,
+      o = !1;
+    try {
+      if (i = (t = t.call(r)).next, 0 === l) {
+        if (Object(t) !== t) return;
+        f = !1;
+      } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
+    } catch (r) {
+      o = !0, n = r;
+    } finally {
+      try {
+        if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return;
+      } finally {
+        if (o) throw n;
+      }
+    }
+    return a;
+  }
+}
+module.exports = _iterableToArrayLimit, module.exports.__esModule = true, module.exports["default"] = module.exports;
+},{}],11:[function(require,module,exports){
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+module.exports = _nonIterableRest, module.exports.__esModule = true, module.exports["default"] = module.exports;
+},{}],12:[function(require,module,exports){
+var arrayWithHoles = require("./arrayWithHoles.js");
+var iterableToArrayLimit = require("./iterableToArrayLimit.js");
+var unsupportedIterableToArray = require("./unsupportedIterableToArray.js");
+var nonIterableRest = require("./nonIterableRest.js");
+function _slicedToArray(r, e) {
+  return arrayWithHoles(r) || iterableToArrayLimit(r, e) || unsupportedIterableToArray(r, e) || nonIterableRest();
+}
+module.exports = _slicedToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
+},{"./arrayWithHoles.js":8,"./iterableToArrayLimit.js":10,"./nonIterableRest.js":11,"./unsupportedIterableToArray.js":13}],13:[function(require,module,exports){
+var arrayLikeToArray = require("./arrayLikeToArray.js");
+function _unsupportedIterableToArray(r, a) {
+  if (r) {
+    if ("string" == typeof r) return arrayLikeToArray(r, a);
+    var t = {}.toString.call(r).slice(8, -1);
+    return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? arrayLikeToArray(r, a) : void 0;
+  }
+}
+module.exports = _unsupportedIterableToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
+},{"./arrayLikeToArray.js":7}],14:[function(require,module,exports){
 'use strict';
 // For more information about browser field, check out the browser field at https://github.com/substack/browserify-handbook#browser-field.
 
@@ -158,7 +316,7 @@ module.exports = {
     }
 };
 
-},{}],7:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -344,7 +502,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],8:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 (function (process){(function (){
 /**
  * @license React
@@ -30271,7 +30429,7 @@ if (
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":7,"react":16,"scheduler":20}],9:[function(require,module,exports){
+},{"_process":15,"react":24,"scheduler":28}],17:[function(require,module,exports){
 /**
  * @license React
  * react-dom.production.min.js
@@ -30595,7 +30753,7 @@ exports.hydrateRoot=function(a,b,c){if(!nl(a))throw Error(p(405));var d=null!=c&
 e);return new ml(b)};exports.render=function(a,b,c){if(!ol(b))throw Error(p(200));return rl(null,a,b,!1,c)};exports.unmountComponentAtNode=function(a){if(!ol(a))throw Error(p(40));return a._reactRootContainer?(Rk(function(){rl(null,null,a,!1,function(){a._reactRootContainer=null;a[uf]=null})}),!0):!1};exports.unstable_batchedUpdates=Qk;
 exports.unstable_renderSubtreeIntoContainer=function(a,b,c,d){if(!ol(c))throw Error(p(200));if(null==a||void 0===a._reactInternals)throw Error(p(38));return rl(a,b,c,!1,d)};exports.version="18.3.1-next-f1338f8080-20240426";
 
-},{"react":16,"scheduler":20}],10:[function(require,module,exports){
+},{"react":24,"scheduler":28}],18:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -30624,7 +30782,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":7,"react-dom":11}],11:[function(require,module,exports){
+},{"_process":15,"react-dom":19}],19:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -30666,7 +30824,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"./cjs/react-dom.development.js":8,"./cjs/react-dom.production.min.js":9,"_process":7}],12:[function(require,module,exports){
+},{"./cjs/react-dom.development.js":16,"./cjs/react-dom.production.min.js":17,"_process":15}],20:[function(require,module,exports){
 (function (process){(function (){
 /**
  * @license React
@@ -32003,7 +32161,7 @@ exports.jsxs = jsxs;
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":7,"react":16}],13:[function(require,module,exports){
+},{"_process":15,"react":24}],21:[function(require,module,exports){
 /**
  * @license React
  * react-jsx-runtime.production.min.js
@@ -32016,7 +32174,7 @@ exports.jsxs = jsxs;
 'use strict';var f=require("react"),k=Symbol.for("react.element"),l=Symbol.for("react.fragment"),m=Object.prototype.hasOwnProperty,n=f.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,p={key:!0,ref:!0,__self:!0,__source:!0};
 function q(c,a,g){var b,d={},e=null,h=null;void 0!==g&&(e=""+g);void 0!==a.key&&(e=""+a.key);void 0!==a.ref&&(h=a.ref);for(b in a)m.call(a,b)&&!p.hasOwnProperty(b)&&(d[b]=a[b]);if(c&&c.defaultProps)for(b in a=c.defaultProps,a)void 0===d[b]&&(d[b]=a[b]);return{$$typeof:k,type:c,key:e,ref:h,props:d,_owner:n.current}}exports.Fragment=l;exports.jsx=q;exports.jsxs=q;
 
-},{"react":16}],14:[function(require,module,exports){
+},{"react":24}],22:[function(require,module,exports){
 (function (process){(function (){
 /**
  * @license React
@@ -34760,7 +34918,7 @@ if (
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":7}],15:[function(require,module,exports){
+},{"_process":15}],23:[function(require,module,exports){
 /**
  * @license React
  * react.production.min.js
@@ -34788,7 +34946,7 @@ exports.forwardRef=function(a){return{$$typeof:v,render:a}};exports.isValidEleme
 exports.useDebugValue=function(){};exports.useDeferredValue=function(a){return U.current.useDeferredValue(a)};exports.useEffect=function(a,b){return U.current.useEffect(a,b)};exports.useId=function(){return U.current.useId()};exports.useImperativeHandle=function(a,b,e){return U.current.useImperativeHandle(a,b,e)};exports.useInsertionEffect=function(a,b){return U.current.useInsertionEffect(a,b)};exports.useLayoutEffect=function(a,b){return U.current.useLayoutEffect(a,b)};
 exports.useMemo=function(a,b){return U.current.useMemo(a,b)};exports.useReducer=function(a,b,e){return U.current.useReducer(a,b,e)};exports.useRef=function(a){return U.current.useRef(a)};exports.useState=function(a){return U.current.useState(a)};exports.useSyncExternalStore=function(a,b,e){return U.current.useSyncExternalStore(a,b,e)};exports.useTransition=function(){return U.current.useTransition()};exports.version="18.3.1";
 
-},{}],16:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -34799,7 +34957,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"./cjs/react.development.js":14,"./cjs/react.production.min.js":15,"_process":7}],17:[function(require,module,exports){
+},{"./cjs/react.development.js":22,"./cjs/react.production.min.js":23,"_process":15}],25:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -34810,7 +34968,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"./cjs/react-jsx-runtime.development.js":12,"./cjs/react-jsx-runtime.production.min.js":13,"_process":7}],18:[function(require,module,exports){
+},{"./cjs/react-jsx-runtime.development.js":20,"./cjs/react-jsx-runtime.production.min.js":21,"_process":15}],26:[function(require,module,exports){
 (function (process,setImmediate){(function (){
 /**
  * @license React
@@ -35448,7 +35606,7 @@ if (
 }
 
 }).call(this)}).call(this,require('_process'),require("timers").setImmediate)
-},{"_process":7,"timers":21}],19:[function(require,module,exports){
+},{"_process":15,"timers":29}],27:[function(require,module,exports){
 (function (setImmediate){(function (){
 /**
  * @license React
@@ -35471,7 +35629,7 @@ exports.unstable_scheduleCallback=function(a,b,c){var d=exports.unstable_now();"
 exports.unstable_shouldYield=M;exports.unstable_wrapCallback=function(a){var b=y;return function(){var c=y;y=b;try{return a.apply(this,arguments)}finally{y=c}}};
 
 }).call(this)}).call(this,require("timers").setImmediate)
-},{"timers":21}],20:[function(require,module,exports){
+},{"timers":29}],28:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -35482,7 +35640,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"./cjs/scheduler.development.js":18,"./cjs/scheduler.production.min.js":19,"_process":7}],21:[function(require,module,exports){
+},{"./cjs/scheduler.development.js":26,"./cjs/scheduler.production.min.js":27,"_process":15}],29:[function(require,module,exports){
 (function (setImmediate,clearImmediate){(function (){
 var nextTick = require('process/browser.js').nextTick;
 var apply = Function.prototype.apply;
@@ -35561,8 +35719,194 @@ exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate :
   delete immediateIds[id];
 };
 }).call(this)}).call(this,require("timers").setImmediate,require("timers").clearImmediate)
-},{"process/browser.js":7,"timers":21}],22:[function(require,module,exports){
-var css = ".bruh {\n  color: slateblue;\n}\n"; (require("browserify-css").createStyle(css, { "href": "styles\\App.css" }, { "insertAt": "bottom" })); module.exports = css;
-},{"browserify-css":6}],23:[function(require,module,exports){
-var css = ".popup {\n  position: relative;\n  padding: 15px;\n  margin: 1em 0 3em;\n  color: #000;\n  background: #f3961c;\n  /* default background for browsers without gradient support */\n  /* css3 */\n  background: -webkit-gradient(linear, 0 0, 0 100%, from(#f9d835), to(#f3961c));\n  background: -moz-linear-gradient(#f9d835, #f3961c);\n  background: -o-linear-gradient(#f9d835, #f3961c);\n  background: linear-gradient(#f9d835, #f3961c);\n  -webkit-border-radius: 10px;\n  -moz-border-radius: 10px;\n  border-radius: 10px;\n}\n.popup:after {\n  content: \"\";\n  position: absolute;\n  bottom: -10px;\n  /* value = - border-top-width - border-bottom-width */\n  left: 50%;\n  /* controls horizontal position */\n  transform: translate(-50%,0);\n  border-width: 10px 10px 0;\n  /* vary these values to change the angle of the vertex */\n  border-style: solid;\n  border-color: #f3961c transparent;\n  /* reduce the damage in FF3.0 */\n  display: block;\n  width: 0;\n}\n.popup.top {\n  background: -webkit-gradient(linear, 0 0, 0 100%, from(#f3961c), to(#f9d835));\n  background: -moz-linear-gradient(#f3961c, #f9d835);\n  background: -o-linear-gradient(#f3961c, #f9d835);\n  background: linear-gradient(#f3961c, #f9d835);\n}\n.popup.top:after {\n  top: -10px;\n  /* value = - border-top-width - border-bottom-width */\n  left: 50%;\n  /* controls horizontal position */\n  transform: translate(-50%,0);\n  bottom: auto;\n  left: auto;\n  border-width: 0 10px 10px;\n  /* vary these values to change the angle of the vertex */\n  border-color: #f3961c transparent;\n}\n"; (require("browserify-css").createStyle(css, { "href": "styles\\Popup.css" }, { "insertAt": "bottom" })); module.exports = css;
-},{"browserify-css":6}]},{},[4]);
+},{"process/browser.js":15,"timers":29}],30:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.generateRoot = generateRoot;
+exports.injectReact = injectReact;
+exports.removeReact = removeReact;
+exports.sendMessage = sendMessage;
+var _react = _interopRequireDefault(require("react"));
+var _client = _interopRequireDefault(require("react-dom/client"));
+var _qol = require("./qol");
+var _jsxRuntime = require("react/jsx-runtime");
+var root_render = null;
+function injectReact(Component, root_ele) {
+  var props = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  if (!root_render) {
+    root_render = _client["default"].createRoot(root_ele);
+  }
+  root_render.render( /*#__PURE__*/(0, _jsxRuntime.jsx)(_react["default"].StrictMode, {
+    children: /*#__PURE__*/(0, _jsxRuntime.jsx)(Component, {
+      props: props
+    })
+  }));
+}
+function removeReact() {
+  if (root_render) {
+    root_render.unmount();
+    root_render = null;
+  } else {
+    console.log("you stupid");
+  }
+}
+function sendMessage(message) {
+  chrome.tabs.query({
+    active: true,
+    currentWindow: true
+  }, function (tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, message);
+  });
+}
+function generateRoot() {
+  var rot = (0, _qol.create)("div");
+  (0, _qol.addClass)(rot, "react-root");
+  return rot;
+}
+
+},{"./qol":31,"@babel/runtime/helpers/interopRequireDefault":9,"react":24,"react-dom/client":18,"react/jsx-runtime":25}],31:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.write = exports.undetect = exports.style = exports.render = exports.remove = exports.remClasses = exports.remClass = exports.read = exports.moveTo = exports.isElement = exports.hasClass = exports.findAll = exports.find = exports.detect = exports.create = exports.attribs = exports.addClasses = exports.addClass = void 0;
+//alif's version of jquery
+
+var render = exports.render = function render(parent, child) {
+  parent.appendChild(child);
+};
+var remove = exports.remove = function remove(parent, child) {
+  if (child.parentNode === parent) {
+    parent.removeChild(child);
+  }
+};
+var create = exports.create = function create(element) {
+  return document.createElement(element);
+};
+var addClass = exports.addClass = function addClass(element, clas) {
+  element.classList.add(clas);
+};
+var addClasses = exports.addClasses = function addClasses(element, classlist) {
+  classlist.forEach(function (clas) {
+    element.classList.add(clas);
+  });
+};
+var hasClass = exports.hasClass = function hasClass(element, clas) {
+  return element.classList.contains(clas);
+};
+var remClass = exports.remClass = function remClass(element, clas) {
+  if (hasClass(element, clas)) {
+    element.classList.remove(clas);
+  }
+};
+var remClasses = exports.remClasses = function remClasses(element, classlist) {
+  classlist.forEach(function (clas) {
+    if (hasClass(element, clas)) {
+      element.classList.remove(clas);
+    }
+  });
+};
+var find = exports.find = function find(selector) {
+  return document.querySelector(selector);
+};
+var findAll = exports.findAll = function findAll(selector) {
+  return document.querySelectorAll(selector);
+};
+var write = exports.write = function write(element, text) {
+  element.textContent = text;
+};
+var read = exports.read = function read(element) {
+  return element.textContent;
+};
+var detect = exports.detect = function detect(element, event, func) {
+  element.addEventListener(event, func);
+};
+var undetect = exports.undetect = function undetect(element, event, func) {
+  element.removeEventListener(event, func);
+};
+var style = exports.style = function style(element, styletext) {
+  element.style.cssText = styletext;
+}; //stylesafe: element.style.exampleAttribute = "value"
+
+var attribs = exports.attribs = function attribs(element, attribList, values) {
+  attribList.map(function (attrib, index) {
+    element.setAttribute(attrib, values[index]);
+  });
+};
+var isElement = exports.isElement = function isElement($obj) {
+  try {
+    return $obj.constructor.__proto__.prototype.constructor.name ? true : false;
+  } catch (e) {
+    return false;
+  }
+};
+var moveTo = exports.moveTo = function moveTo(element, x, y) {
+  element.style.top = y + "px";
+  element.style.left = x + "px";
+};
+var getPos = function getPos(evt, myrect) {
+  var rect = myrect.getBoundingClientRect();
+  var mousePos = {
+    x: evt.clientX - rect.left,
+    y: evt.clientY - rect.top
+  };
+  return mousePos;
+};
+var checkCollision = function checkCollision(thing1, thing2) {
+  if (thing1 === null || thing2 === null) {
+    return false;
+  }
+  // Get the bounding box of the first element 
+  var rect1 = thing1.getBoundingClientRect();
+
+  // Get the bounding box of the second element 
+  var rect2 = thing2.getBoundingClientRect();
+
+  // Check if the two elements overlap 
+  var overlap = !(rect1.right - 15 < rect2.left + 15 || rect1.left + 15 > rect2.right - 15 || rect1.bottom - 15 < rect2.top + 15 || rect1.top + 15 > rect2.bottom - 15);
+  return overlap;
+};
+var checkCollisionReal = function checkCollisionReal(thing1, thing2) {
+  if (thing1 === null || thing2 === null) {
+    return false;
+  }
+  // Get the bounding box of the first element 
+  var rect1 = thing1.getBoundingClientRect();
+
+  // Get the bounding box of the second element 
+  var rect2 = thing2.getBoundingClientRect();
+
+  // Check if the two elements overlap 
+  var overlap = !(rect1.right < rect2.left || rect1.left > rect2.right || rect1.bottom < rect2.top || rect1.top > rect2.bottom);
+  return overlap;
+};
+var getPosEle = function getPosEle(element, size) {
+  var left = element.style.left;
+  var top = element.style.top;
+  var x;
+  var y;
+  if (size === "none") {
+    x = Number(left.substring(0, left.length - 2));
+    y = Number(top.substring(0, top.length - 2));
+  } else {
+    x = Number(left.substring(0, left.length - 2)) + size / 2;
+    y = Number(top.substring(0, top.length - 2)) + size / 2;
+  }
+  return {
+    x: x,
+    y: y
+  };
+};
+
+},{}],32:[function(require,module,exports){
+var css = ".bruh {\n  color: white;\n  font-size: 50px;\n}\n"; (require("browserify-css").createStyle(css, { "href": "styles\\App.css" }, { "insertAt": "bottom" })); module.exports = css;
+},{"browserify-css":14}],33:[function(require,module,exports){
+var css = ".popup {\n  position: absolute;\n  transform: translate(-50%,-100%);\n  font-size: 1em;\n  padding: 15px;\n  margin: 1em 0 3em;\n  color: #000;\n  background: #f3961c;\n  /* default background for browsers without gradient support */\n  /* css3 */\n  background: -webkit-gradient(linear, 0 0, 0 100%, from(#f9d835), to(#f3961c));\n  background: -moz-linear-gradient(#f9d835, #f3961c);\n  background: -o-linear-gradient(#f9d835, #f3961c);\n  background: linear-gradient(#f9d835, #f3961c);\n  -webkit-border-radius: 10px;\n  -moz-border-radius: 10px;\n  border-radius: 10px;\n}\n.popup:after {\n  content: \"\";\n  position: absolute;\n  bottom: -10px;\n  /* value = - border-top-width - border-bottom-width */\n  left: 50%;\n  /* controls horizontal position */\n  transform: translate(-50%,0);\n  border-width: 10px 10px 0;\n  /* vary these values to change the angle of the vertex */\n  border-style: solid;\n  border-color: #f3961c transparent;\n  /* reduce the damage in FF3.0 */\n  display: block;\n  width: 0;\n}\n.popup.top {\n  background: -webkit-gradient(linear, 0 0, 0 100%, from(#f3961c), to(#f9d835));\n  background: -moz-linear-gradient(#f3961c, #f9d835);\n  background: -o-linear-gradient(#f3961c, #f9d835);\n  background: linear-gradient(#f3961c, #f9d835);\n}\n.popup.top:after {\n  top: -10px;\n  /* value = - border-top-width - border-bottom-width */\n  left: 50%;\n  /* controls horizontal position */\n  transform: translate(-50%,0);\n  bottom: auto;\n  left: auto;\n  border-width: 0 10px 10px;\n  /* vary these values to change the angle of the vertex */\n  border-color: #f3961c transparent;\n}\n"; (require("browserify-css").createStyle(css, { "href": "styles\\Popup.css" }, { "insertAt": "bottom" })); module.exports = css;
+},{"browserify-css":14}],34:[function(require,module,exports){
+var css = ".react-root {\n  position: absolute;\n  width: 100vw;\n  position: 100vh;\n  top: 0px;\n  left: 0px;\n}\n"; (require("browserify-css").createStyle(css, { "href": "styles\\Root.css" }, { "insertAt": "bottom" })); module.exports = css;
+},{"browserify-css":14}]},{},[6]);

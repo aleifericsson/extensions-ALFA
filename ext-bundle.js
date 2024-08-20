@@ -7,39 +7,113 @@ Object.defineProperty(exports, "__esModule", {
 exports["default"] = App;
 require("../styles/App.css");
 var _jsxRuntime = require("react/jsx-runtime");
-function App() {
+function App(_ref) {
+  var props = _ref.props;
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     className: "bruh",
     children: "bruh"
   });
 }
 
-},{"../styles/App.css":22,"react/jsx-runtime":15}],2:[function(require,module,exports){
+},{"../styles/App.css":24,"react/jsx-runtime":17}],2:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = GenMenu;
+require("../styles/Popup.css");
+var _jsxRuntime = require("react/jsx-runtime");
+function GenMenu(_ref) {
+  var props = _ref.props;
+  //props: {startx, starty}
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+    className: "popup",
+    style: {
+      left: props.startx,
+      top: props.starty
+    },
+    children: "GenMenu"
+  });
+}
+
+},{"../styles/Popup.css":25,"react/jsx-runtime":17}],3:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = Popup;
+var _extMain = require("../ext-main");
+var _extQol = require("../scripts/ext-qol");
+require("../styles/Popup.css");
+var _GenMenu = _interopRequireDefault(require("./GenMenu.jsx"));
+var _jsxRuntime = require("react/jsx-runtime");
+function Popup(_ref) {
+  var props = _ref.props;
+  //props: {startx, starty}
+
+  var openGenMenu = function openGenMenu() {
+    (0, _extQol.injectReact)(_GenMenu["default"], _extMain.root, {
+      startx: 50,
+      starty: 100
+    });
+  };
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+    className: "popup",
+    style: {
+      left: props.startx,
+      top: props.starty
+    },
+    children: /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+      onClick: openGenMenu,
+      children: "Generate with AI?"
+    })
+  });
+}
+
+},{"../ext-main":4,"../scripts/ext-qol":22,"../styles/Popup.css":25,"./GenMenu.jsx":2,"@babel/runtime/helpers/interopRequireDefault":5,"react/jsx-runtime":17}],4:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.root = void 0;
 var _qol = require("./scripts/qol.js");
 var _App = _interopRequireDefault(require("./components/App.jsx"));
 var _extQol = require("./scripts/ext-qol.js");
-var root = (0, _qol.create)("div");
+var _Popup = _interopRequireDefault(require("./components/Popup.jsx"));
+require("./styles/Root.css");
+var root = exports.root = (0, _extQol.generateRoot)();
 (0, _qol.render)(document.body, root);
-(0, _extQol.injectReact)(_App["default"], root);
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   console.log(message);
   if (message.message == "change_color") {
     //{message, color}
     document.body.style.backgroundColor = message.color;
+  } else if (message.message == "toggle_popup") {
+    //{message, popup_visible}
+    if (message.popup_visible) {
+      (0, _extQol.injectReact)(_Popup["default"], root, {
+        startx: 50,
+        starty: 100
+      });
+    } else {
+      (0, _extQol.removeReact)();
+    }
   }
 });
 
-},{"./components/App.jsx":1,"./scripts/ext-qol.js":20,"./scripts/qol.js":21,"@babel/runtime/helpers/interopRequireDefault":3}],3:[function(require,module,exports){
+},{"./components/App.jsx":1,"./components/Popup.jsx":3,"./scripts/ext-qol.js":22,"./scripts/qol.js":23,"./styles/Root.css":26,"@babel/runtime/helpers/interopRequireDefault":5}],5:[function(require,module,exports){
 function _interopRequireDefault(e) {
   return e && e.__esModule ? e : {
     "default": e
   };
 }
 module.exports = _interopRequireDefault, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 // For more information about browser field, check out the browser field at https://github.com/substack/browserify-handbook#browser-field.
 
@@ -116,7 +190,7 @@ module.exports = {
     }
 };
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -302,7 +376,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 (function (process){(function (){
 /**
  * @license React
@@ -30229,7 +30303,7 @@ if (
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":5,"react":14,"scheduler":18}],7:[function(require,module,exports){
+},{"_process":7,"react":16,"scheduler":20}],9:[function(require,module,exports){
 /**
  * @license React
  * react-dom.production.min.js
@@ -30553,7 +30627,7 @@ exports.hydrateRoot=function(a,b,c){if(!nl(a))throw Error(p(405));var d=null!=c&
 e);return new ml(b)};exports.render=function(a,b,c){if(!ol(b))throw Error(p(200));return rl(null,a,b,!1,c)};exports.unmountComponentAtNode=function(a){if(!ol(a))throw Error(p(40));return a._reactRootContainer?(Rk(function(){rl(null,null,a,!1,function(){a._reactRootContainer=null;a[uf]=null})}),!0):!1};exports.unstable_batchedUpdates=Qk;
 exports.unstable_renderSubtreeIntoContainer=function(a,b,c,d){if(!ol(c))throw Error(p(200));if(null==a||void 0===a._reactInternals)throw Error(p(38));return rl(a,b,c,!1,d)};exports.version="18.3.1-next-f1338f8080-20240426";
 
-},{"react":14,"scheduler":18}],8:[function(require,module,exports){
+},{"react":16,"scheduler":20}],10:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -30582,7 +30656,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":5,"react-dom":9}],9:[function(require,module,exports){
+},{"_process":7,"react-dom":11}],11:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -30624,7 +30698,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"./cjs/react-dom.development.js":6,"./cjs/react-dom.production.min.js":7,"_process":5}],10:[function(require,module,exports){
+},{"./cjs/react-dom.development.js":8,"./cjs/react-dom.production.min.js":9,"_process":7}],12:[function(require,module,exports){
 (function (process){(function (){
 /**
  * @license React
@@ -31961,7 +32035,7 @@ exports.jsxs = jsxs;
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":5,"react":14}],11:[function(require,module,exports){
+},{"_process":7,"react":16}],13:[function(require,module,exports){
 /**
  * @license React
  * react-jsx-runtime.production.min.js
@@ -31974,7 +32048,7 @@ exports.jsxs = jsxs;
 'use strict';var f=require("react"),k=Symbol.for("react.element"),l=Symbol.for("react.fragment"),m=Object.prototype.hasOwnProperty,n=f.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,p={key:!0,ref:!0,__self:!0,__source:!0};
 function q(c,a,g){var b,d={},e=null,h=null;void 0!==g&&(e=""+g);void 0!==a.key&&(e=""+a.key);void 0!==a.ref&&(h=a.ref);for(b in a)m.call(a,b)&&!p.hasOwnProperty(b)&&(d[b]=a[b]);if(c&&c.defaultProps)for(b in a=c.defaultProps,a)void 0===d[b]&&(d[b]=a[b]);return{$$typeof:k,type:c,key:e,ref:h,props:d,_owner:n.current}}exports.Fragment=l;exports.jsx=q;exports.jsxs=q;
 
-},{"react":14}],12:[function(require,module,exports){
+},{"react":16}],14:[function(require,module,exports){
 (function (process){(function (){
 /**
  * @license React
@@ -34718,7 +34792,7 @@ if (
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":5}],13:[function(require,module,exports){
+},{"_process":7}],15:[function(require,module,exports){
 /**
  * @license React
  * react.production.min.js
@@ -34746,7 +34820,7 @@ exports.forwardRef=function(a){return{$$typeof:v,render:a}};exports.isValidEleme
 exports.useDebugValue=function(){};exports.useDeferredValue=function(a){return U.current.useDeferredValue(a)};exports.useEffect=function(a,b){return U.current.useEffect(a,b)};exports.useId=function(){return U.current.useId()};exports.useImperativeHandle=function(a,b,e){return U.current.useImperativeHandle(a,b,e)};exports.useInsertionEffect=function(a,b){return U.current.useInsertionEffect(a,b)};exports.useLayoutEffect=function(a,b){return U.current.useLayoutEffect(a,b)};
 exports.useMemo=function(a,b){return U.current.useMemo(a,b)};exports.useReducer=function(a,b,e){return U.current.useReducer(a,b,e)};exports.useRef=function(a){return U.current.useRef(a)};exports.useState=function(a){return U.current.useState(a)};exports.useSyncExternalStore=function(a,b,e){return U.current.useSyncExternalStore(a,b,e)};exports.useTransition=function(){return U.current.useTransition()};exports.version="18.3.1";
 
-},{}],14:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -34757,7 +34831,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"./cjs/react.development.js":12,"./cjs/react.production.min.js":13,"_process":5}],15:[function(require,module,exports){
+},{"./cjs/react.development.js":14,"./cjs/react.production.min.js":15,"_process":7}],17:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -34768,7 +34842,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"./cjs/react-jsx-runtime.development.js":10,"./cjs/react-jsx-runtime.production.min.js":11,"_process":5}],16:[function(require,module,exports){
+},{"./cjs/react-jsx-runtime.development.js":12,"./cjs/react-jsx-runtime.production.min.js":13,"_process":7}],18:[function(require,module,exports){
 (function (process,setImmediate){(function (){
 /**
  * @license React
@@ -35406,7 +35480,7 @@ if (
 }
 
 }).call(this)}).call(this,require('_process'),require("timers").setImmediate)
-},{"_process":5,"timers":19}],17:[function(require,module,exports){
+},{"_process":7,"timers":21}],19:[function(require,module,exports){
 (function (setImmediate){(function (){
 /**
  * @license React
@@ -35429,7 +35503,7 @@ exports.unstable_scheduleCallback=function(a,b,c){var d=exports.unstable_now();"
 exports.unstable_shouldYield=M;exports.unstable_wrapCallback=function(a){var b=y;return function(){var c=y;y=b;try{return a.apply(this,arguments)}finally{y=c}}};
 
 }).call(this)}).call(this,require("timers").setImmediate)
-},{"timers":19}],18:[function(require,module,exports){
+},{"timers":21}],20:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -35440,7 +35514,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"./cjs/scheduler.development.js":16,"./cjs/scheduler.production.min.js":17,"_process":5}],19:[function(require,module,exports){
+},{"./cjs/scheduler.development.js":18,"./cjs/scheduler.production.min.js":19,"_process":7}],21:[function(require,module,exports){
 (function (setImmediate,clearImmediate){(function (){
 var nextTick = require('process/browser.js').nextTick;
 var apply = Function.prototype.apply;
@@ -35519,30 +35593,62 @@ exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate :
   delete immediateIds[id];
 };
 }).call(this)}).call(this,require("timers").setImmediate,require("timers").clearImmediate)
-},{"process/browser.js":5,"timers":19}],20:[function(require,module,exports){
+},{"process/browser.js":7,"timers":21}],22:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.generateRoot = generateRoot;
 exports.injectReact = injectReact;
+exports.removeReact = removeReact;
+exports.sendMessage = sendMessage;
 var _react = _interopRequireDefault(require("react"));
 var _client = _interopRequireDefault(require("react-dom/client"));
+var _qol = require("./qol");
 var _jsxRuntime = require("react/jsx-runtime");
+var root_render = null;
 function injectReact(Component, root_ele) {
-  _client["default"].createRoot(root_ele).render( /*#__PURE__*/(0, _jsxRuntime.jsx)(_react["default"].StrictMode, {
-    children: /*#__PURE__*/(0, _jsxRuntime.jsx)(Component, {})
+  var props = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  if (!root_render) {
+    root_render = _client["default"].createRoot(root_ele);
+  }
+  root_render.render( /*#__PURE__*/(0, _jsxRuntime.jsx)(_react["default"].StrictMode, {
+    children: /*#__PURE__*/(0, _jsxRuntime.jsx)(Component, {
+      props: props
+    })
   }));
 }
+function removeReact() {
+  if (root_render) {
+    root_render.unmount();
+    root_render = null;
+  } else {
+    console.log("you stupid");
+  }
+}
+function sendMessage(message) {
+  chrome.tabs.query({
+    active: true,
+    currentWindow: true
+  }, function (tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, message);
+  });
+}
+function generateRoot() {
+  var rot = (0, _qol.create)("div");
+  (0, _qol.addClass)(rot, "react-root");
+  return rot;
+}
 
-},{"@babel/runtime/helpers/interopRequireDefault":3,"react":14,"react-dom/client":8,"react/jsx-runtime":15}],21:[function(require,module,exports){
+},{"./qol":23,"@babel/runtime/helpers/interopRequireDefault":5,"react":16,"react-dom/client":10,"react/jsx-runtime":17}],23:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.write = exports.undetect = exports.style = exports.render = exports.remove = exports.remClass = exports.read = exports.isElement = exports.hasClass = exports.findAll = exports.find = exports.detect = exports.create = exports.attribs = exports.addClass = void 0;
+exports.write = exports.undetect = exports.style = exports.render = exports.remove = exports.remClasses = exports.remClass = exports.read = exports.moveTo = exports.isElement = exports.hasClass = exports.findAll = exports.find = exports.detect = exports.create = exports.attribs = exports.addClasses = exports.addClass = void 0;
 //alif's version of jquery
 
 var render = exports.render = function render(parent, child) {
@@ -35556,7 +35662,10 @@ var remove = exports.remove = function remove(parent, child) {
 var create = exports.create = function create(element) {
   return document.createElement(element);
 };
-var addClass = exports.addClass = function addClass(element, classlist) {
+var addClass = exports.addClass = function addClass(element, clas) {
+  element.classList.add(clas);
+};
+var addClasses = exports.addClasses = function addClasses(element, classlist) {
   classlist.forEach(function (clas) {
     element.classList.add(clas);
   });
@@ -35564,7 +35673,12 @@ var addClass = exports.addClass = function addClass(element, classlist) {
 var hasClass = exports.hasClass = function hasClass(element, clas) {
   return element.classList.contains(clas);
 };
-var remClass = exports.remClass = function remClass(element, classlist) {
+var remClass = exports.remClass = function remClass(element, clas) {
+  if (hasClass(element, clas)) {
+    element.classList.remove(clas);
+  }
+};
+var remClasses = exports.remClasses = function remClasses(element, classlist) {
   classlist.forEach(function (clas) {
     if (hasClass(element, clas)) {
       element.classList.remove(clas);
@@ -35605,9 +35719,9 @@ var isElement = exports.isElement = function isElement($obj) {
     return false;
   }
 };
-var moveTo = function moveTo(element, x, y, size) {
-  element.style.top = y - size / 2 + "px";
-  element.style.left = x - size / 2 + "px";
+var moveTo = exports.moveTo = function moveTo(element, x, y) {
+  element.style.top = y + "px";
+  element.style.left = x + "px";
 };
 var getPos = function getPos(evt, myrect) {
   var rect = myrect.getBoundingClientRect();
@@ -35663,6 +35777,10 @@ var getPosEle = function getPosEle(element, size) {
   };
 };
 
-},{}],22:[function(require,module,exports){
-var css = ".bruh {\n  color: slateblue;\n}\n"; (require("browserify-css").createStyle(css, { "href": "styles\\App.css" }, { "insertAt": "bottom" })); module.exports = css;
-},{"browserify-css":4}]},{},[2]);
+},{}],24:[function(require,module,exports){
+var css = ".bruh {\n  color: white;\n  font-size: 50px;\n}\n"; (require("browserify-css").createStyle(css, { "href": "styles\\App.css" }, { "insertAt": "bottom" })); module.exports = css;
+},{"browserify-css":6}],25:[function(require,module,exports){
+var css = ".popup {\n  position: absolute;\n  transform: translate(-50%,-100%);\n  font-size: 1em;\n  padding: 15px;\n  margin: 1em 0 3em;\n  color: #000;\n  background: #f3961c;\n  /* default background for browsers without gradient support */\n  /* css3 */\n  background: -webkit-gradient(linear, 0 0, 0 100%, from(#f9d835), to(#f3961c));\n  background: -moz-linear-gradient(#f9d835, #f3961c);\n  background: -o-linear-gradient(#f9d835, #f3961c);\n  background: linear-gradient(#f9d835, #f3961c);\n  -webkit-border-radius: 10px;\n  -moz-border-radius: 10px;\n  border-radius: 10px;\n}\n.popup:after {\n  content: \"\";\n  position: absolute;\n  bottom: -10px;\n  /* value = - border-top-width - border-bottom-width */\n  left: 50%;\n  /* controls horizontal position */\n  transform: translate(-50%,0);\n  border-width: 10px 10px 0;\n  /* vary these values to change the angle of the vertex */\n  border-style: solid;\n  border-color: #f3961c transparent;\n  /* reduce the damage in FF3.0 */\n  display: block;\n  width: 0;\n}\n.popup.top {\n  background: -webkit-gradient(linear, 0 0, 0 100%, from(#f3961c), to(#f9d835));\n  background: -moz-linear-gradient(#f3961c, #f9d835);\n  background: -o-linear-gradient(#f3961c, #f9d835);\n  background: linear-gradient(#f3961c, #f9d835);\n}\n.popup.top:after {\n  top: -10px;\n  /* value = - border-top-width - border-bottom-width */\n  left: 50%;\n  /* controls horizontal position */\n  transform: translate(-50%,0);\n  bottom: auto;\n  left: auto;\n  border-width: 0 10px 10px;\n  /* vary these values to change the angle of the vertex */\n  border-color: #f3961c transparent;\n}\n"; (require("browserify-css").createStyle(css, { "href": "styles\\Popup.css" }, { "insertAt": "bottom" })); module.exports = css;
+},{"browserify-css":6}],26:[function(require,module,exports){
+var css = ".react-root {\n  position: absolute;\n  width: 100vw;\n  position: 100vh;\n  top: 0px;\n  left: 0px;\n}\n"; (require("browserify-css").createStyle(css, { "href": "styles\\Root.css" }, { "insertAt": "bottom" })); module.exports = css;
+},{"browserify-css":6}]},{},[4]);

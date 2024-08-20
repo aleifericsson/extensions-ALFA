@@ -7,7 +7,9 @@
         "watch": "npx watchify -t [ babelify --presets  [@babel/preset-react]  ] -t browserify-css main.js -o bundle.js",
         "build": "browserify -t [ babelify --presets  [@babel/preset-react]  ] -t browserify-css main.js > bundle.js",
         "watch-ext": "npx watchify -t [ babelify --presets  [@babel/preset-react]  ] -t browserify-css ext-main.js -o ext-bundle.js",
-        "build-ext": "browserify -t [ babelify --presets  [@babel/preset-react]  ] -t browserify-css ext-main.js > ext-bundle.js"
+        "build-ext": "browserify -t [ babelify --presets  [@babel/preset-react]  ] -t browserify-css ext-main.js > ext-bundle.js",
+        "build-all": "npm run build & npm run build-ext",
+        "watch-all": "npm run watch & npm run watch-ext"
     },
     "keywords": [],
     "author": "",
@@ -16,7 +18,8 @@
     "dependencies": {
         "@babel/core": "^7.24.9",
         "react": "^18.3.1",
-        "react-dom": "^18.3.1"
+        "react-dom": "^18.3.1",
+        "react-hook-form": "^7.52.2"
     },
     "devDependencies": {
         "@babel/plugin-transform-react-jsx": "^7.25.2",

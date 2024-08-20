@@ -6,8 +6,6 @@ import Settings from './components/Settings.jsx';
 
 ReactDOM.createRoot(document.getElementById('react-root')).render(
     <React.StrictMode>
-      <App />
-      <Popup />
       <Settings />
     </React.StrictMode>
   );
