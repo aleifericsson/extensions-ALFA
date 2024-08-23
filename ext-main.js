@@ -6,6 +6,7 @@ import './styles/Root.css'
 
 const root = generateRoot()
 render(document.body, root)
+let popup_pos = {x: 300, y: 500}
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     console.log(message)
@@ -14,7 +15,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     }
     else if (message.message == "toggle_popup"){ //{message, popup_visible}
         if(message.popup_visible){
-            injectReact(Popup, root,{startx:50,starty:100})
+            injectReact(Popup, root,{startx:popup_pos.x,starty:popup_pos.y})
         }
         else{
             removeReact()
@@ -22,4 +23,4 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     }
 });
 
-export {root}
+export {root, popup_pos}
