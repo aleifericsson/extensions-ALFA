@@ -1,27 +1,13 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = App;
-require("../styles/App.css");
-var _jsxRuntime = require("react/jsx-runtime");
-function App(_ref) {
-  var props = _ref.props;
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-    className: "bruh"
-  });
-}
-
-},{"../styles/App.css":23,"react/jsx-runtime":16}],2:[function(require,module,exports){
-"use strict";
-
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = Popup;
-var _mainExt = require("../main-ext.js");
+var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
+var _react = require("react");
 var _extQol = require("../scripts/ext-qol");
 require("../styles/Popup.css");
 var _jsxRuntime = require("react/jsx-runtime");
@@ -31,17 +17,39 @@ function Popup(_ref) {
   var props = _ref.props;
   //props: {startx, starty}
 
+  var _useState = (0, _react.useState)(props.startx),
+    _useState2 = (0, _slicedToArray2["default"])(_useState, 2),
+    x = _useState2[0],
+    setX = _useState2[1];
+  var _useState3 = (0, _react.useState)(props.starty),
+    _useState4 = (0, _slicedToArray2["default"])(_useState3, 2),
+    y = _useState4[0],
+    setY = _useState4[1];
+  var _useState5 = (0, _react.useState)("popup poop"),
+    _useState6 = (0, _slicedToArray2["default"])(_useState5, 2),
+    classes = _useState6[0],
+    setClasses = _useState6[1];
   var closePopup = function closePopup() {
     (0, _extQol.removeReact)();
   };
+  var setPos = function setPos(x, y) {
+    setX(x);
+    setY(y);
+  };
+  var getPos = function getPos() {
+    return {
+      x: x,
+      y: y
+    };
+  };
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-    className: "popup",
+    className: classes,
     style: {
-      left: props.startx,
-      top: props.starty
+      left: x,
+      top: y
     },
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      className: "top-bar",
+      className: "top-bar poop",
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)("img", {
         className: "close-icon",
         onClick: closePopup,
@@ -49,52 +57,99 @@ function Popup(_ref) {
       })
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       className: "popup-content",
-      children: "popup"
+      children: "Popup"
     })]
   });
 }
 
-},{"../main-ext.js":3,"../scripts/ext-qol":21,"../styles/Popup.css":24,"react/jsx-runtime":16}],3:[function(require,module,exports){
+},{"../scripts/ext-qol":26,"../styles/Popup.css":29,"@babel/runtime/helpers/interopRequireDefault":5,"@babel/runtime/helpers/slicedToArray":8,"react":20,"react/jsx-runtime":21}],2:[function(require,module,exports){
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.root = exports.popup_pos = void 0;
+exports.root = void 0;
 var _qol = require("./scripts/qol.js");
-var _App = _interopRequireDefault(require("./components/App.jsx"));
 var _extQol = require("./scripts/ext-qol.js");
-var _Popup = _interopRequireDefault(require("./components/Popup.jsx"));
 require("./styles/Root.css");
+var _messages = require("./scripts/messages.js");
 var root = exports.root = (0, _extQol.generateRoot)();
 (0, _qol.render)(document.body, root);
-var popup_pos = exports.popup_pos = {
-  x: 300,
-  y: 500
-};
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-  if (message.message == "toggle_popup") {
-    //{message, popup_visible}
-    if (message.popup_visible) {
-      (0, _extQol.injectReact)(_Popup["default"], root, {
-        startx: popup_pos.x,
-        starty: popup_pos.y
-      });
-    } else {
-      (0, _extQol.removeReact)();
-    }
-  }
-});
+(0, _messages.handleMessages)();
 
-},{"./components/App.jsx":1,"./components/Popup.jsx":2,"./scripts/ext-qol.js":21,"./scripts/qol.js":22,"./styles/Root.css":25,"@babel/runtime/helpers/interopRequireDefault":4}],4:[function(require,module,exports){
+},{"./scripts/ext-qol.js":26,"./scripts/messages.js":27,"./scripts/qol.js":28,"./styles/Root.css":30}],3:[function(require,module,exports){
+function _arrayLikeToArray(r, a) {
+  (null == a || a > r.length) && (a = r.length);
+  for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
+  return n;
+}
+module.exports = _arrayLikeToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
+},{}],4:[function(require,module,exports){
+function _arrayWithHoles(r) {
+  if (Array.isArray(r)) return r;
+}
+module.exports = _arrayWithHoles, module.exports.__esModule = true, module.exports["default"] = module.exports;
+},{}],5:[function(require,module,exports){
 function _interopRequireDefault(e) {
   return e && e.__esModule ? e : {
     "default": e
   };
 }
 module.exports = _interopRequireDefault, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
+function _iterableToArrayLimit(r, l) {
+  var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
+  if (null != t) {
+    var e,
+      n,
+      i,
+      u,
+      a = [],
+      f = !0,
+      o = !1;
+    try {
+      if (i = (t = t.call(r)).next, 0 === l) {
+        if (Object(t) !== t) return;
+        f = !1;
+      } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
+    } catch (r) {
+      o = !0, n = r;
+    } finally {
+      try {
+        if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return;
+      } finally {
+        if (o) throw n;
+      }
+    }
+    return a;
+  }
+}
+module.exports = _iterableToArrayLimit, module.exports.__esModule = true, module.exports["default"] = module.exports;
+},{}],7:[function(require,module,exports){
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+module.exports = _nonIterableRest, module.exports.__esModule = true, module.exports["default"] = module.exports;
+},{}],8:[function(require,module,exports){
+var arrayWithHoles = require("./arrayWithHoles.js");
+var iterableToArrayLimit = require("./iterableToArrayLimit.js");
+var unsupportedIterableToArray = require("./unsupportedIterableToArray.js");
+var nonIterableRest = require("./nonIterableRest.js");
+function _slicedToArray(r, e) {
+  return arrayWithHoles(r) || iterableToArrayLimit(r, e) || unsupportedIterableToArray(r, e) || nonIterableRest();
+}
+module.exports = _slicedToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
+},{"./arrayWithHoles.js":4,"./iterableToArrayLimit.js":6,"./nonIterableRest.js":7,"./unsupportedIterableToArray.js":9}],9:[function(require,module,exports){
+var arrayLikeToArray = require("./arrayLikeToArray.js");
+function _unsupportedIterableToArray(r, a) {
+  if (r) {
+    if ("string" == typeof r) return arrayLikeToArray(r, a);
+    var t = {}.toString.call(r).slice(8, -1);
+    return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? arrayLikeToArray(r, a) : void 0;
+  }
+}
+module.exports = _unsupportedIterableToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
+},{"./arrayLikeToArray.js":3}],10:[function(require,module,exports){
 'use strict';
 // For more information about browser field, check out the browser field at https://github.com/substack/browserify-handbook#browser-field.
 
@@ -171,7 +226,7 @@ module.exports = {
     }
 };
 
-},{}],6:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -357,7 +412,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],7:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 (function (process){(function (){
 /**
  * @license React
@@ -30284,7 +30339,7 @@ if (
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":6,"react":15,"scheduler":19}],8:[function(require,module,exports){
+},{"_process":11,"react":20,"scheduler":24}],13:[function(require,module,exports){
 /**
  * @license React
  * react-dom.production.min.js
@@ -30608,7 +30663,7 @@ exports.hydrateRoot=function(a,b,c){if(!nl(a))throw Error(p(405));var d=null!=c&
 e);return new ml(b)};exports.render=function(a,b,c){if(!ol(b))throw Error(p(200));return rl(null,a,b,!1,c)};exports.unmountComponentAtNode=function(a){if(!ol(a))throw Error(p(40));return a._reactRootContainer?(Rk(function(){rl(null,null,a,!1,function(){a._reactRootContainer=null;a[uf]=null})}),!0):!1};exports.unstable_batchedUpdates=Qk;
 exports.unstable_renderSubtreeIntoContainer=function(a,b,c,d){if(!ol(c))throw Error(p(200));if(null==a||void 0===a._reactInternals)throw Error(p(38));return rl(a,b,c,!1,d)};exports.version="18.3.1-next-f1338f8080-20240426";
 
-},{"react":15,"scheduler":19}],9:[function(require,module,exports){
+},{"react":20,"scheduler":24}],14:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -30637,7 +30692,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":6,"react-dom":10}],10:[function(require,module,exports){
+},{"_process":11,"react-dom":15}],15:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -30679,7 +30734,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"./cjs/react-dom.development.js":7,"./cjs/react-dom.production.min.js":8,"_process":6}],11:[function(require,module,exports){
+},{"./cjs/react-dom.development.js":12,"./cjs/react-dom.production.min.js":13,"_process":11}],16:[function(require,module,exports){
 (function (process){(function (){
 /**
  * @license React
@@ -32016,7 +32071,7 @@ exports.jsxs = jsxs;
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":6,"react":15}],12:[function(require,module,exports){
+},{"_process":11,"react":20}],17:[function(require,module,exports){
 /**
  * @license React
  * react-jsx-runtime.production.min.js
@@ -32029,7 +32084,7 @@ exports.jsxs = jsxs;
 'use strict';var f=require("react"),k=Symbol.for("react.element"),l=Symbol.for("react.fragment"),m=Object.prototype.hasOwnProperty,n=f.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,p={key:!0,ref:!0,__self:!0,__source:!0};
 function q(c,a,g){var b,d={},e=null,h=null;void 0!==g&&(e=""+g);void 0!==a.key&&(e=""+a.key);void 0!==a.ref&&(h=a.ref);for(b in a)m.call(a,b)&&!p.hasOwnProperty(b)&&(d[b]=a[b]);if(c&&c.defaultProps)for(b in a=c.defaultProps,a)void 0===d[b]&&(d[b]=a[b]);return{$$typeof:k,type:c,key:e,ref:h,props:d,_owner:n.current}}exports.Fragment=l;exports.jsx=q;exports.jsxs=q;
 
-},{"react":15}],13:[function(require,module,exports){
+},{"react":20}],18:[function(require,module,exports){
 (function (process){(function (){
 /**
  * @license React
@@ -34773,7 +34828,7 @@ if (
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":6}],14:[function(require,module,exports){
+},{"_process":11}],19:[function(require,module,exports){
 /**
  * @license React
  * react.production.min.js
@@ -34801,7 +34856,7 @@ exports.forwardRef=function(a){return{$$typeof:v,render:a}};exports.isValidEleme
 exports.useDebugValue=function(){};exports.useDeferredValue=function(a){return U.current.useDeferredValue(a)};exports.useEffect=function(a,b){return U.current.useEffect(a,b)};exports.useId=function(){return U.current.useId()};exports.useImperativeHandle=function(a,b,e){return U.current.useImperativeHandle(a,b,e)};exports.useInsertionEffect=function(a,b){return U.current.useInsertionEffect(a,b)};exports.useLayoutEffect=function(a,b){return U.current.useLayoutEffect(a,b)};
 exports.useMemo=function(a,b){return U.current.useMemo(a,b)};exports.useReducer=function(a,b,e){return U.current.useReducer(a,b,e)};exports.useRef=function(a){return U.current.useRef(a)};exports.useState=function(a){return U.current.useState(a)};exports.useSyncExternalStore=function(a,b,e){return U.current.useSyncExternalStore(a,b,e)};exports.useTransition=function(){return U.current.useTransition()};exports.version="18.3.1";
 
-},{}],15:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -34812,7 +34867,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"./cjs/react.development.js":13,"./cjs/react.production.min.js":14,"_process":6}],16:[function(require,module,exports){
+},{"./cjs/react.development.js":18,"./cjs/react.production.min.js":19,"_process":11}],21:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -34823,7 +34878,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"./cjs/react-jsx-runtime.development.js":11,"./cjs/react-jsx-runtime.production.min.js":12,"_process":6}],17:[function(require,module,exports){
+},{"./cjs/react-jsx-runtime.development.js":16,"./cjs/react-jsx-runtime.production.min.js":17,"_process":11}],22:[function(require,module,exports){
 (function (process,setImmediate){(function (){
 /**
  * @license React
@@ -35461,7 +35516,7 @@ if (
 }
 
 }).call(this)}).call(this,require('_process'),require("timers").setImmediate)
-},{"_process":6,"timers":20}],18:[function(require,module,exports){
+},{"_process":11,"timers":25}],23:[function(require,module,exports){
 (function (setImmediate){(function (){
 /**
  * @license React
@@ -35484,7 +35539,7 @@ exports.unstable_scheduleCallback=function(a,b,c){var d=exports.unstable_now();"
 exports.unstable_shouldYield=M;exports.unstable_wrapCallback=function(a){var b=y;return function(){var c=y;y=b;try{return a.apply(this,arguments)}finally{y=c}}};
 
 }).call(this)}).call(this,require("timers").setImmediate)
-},{"timers":20}],19:[function(require,module,exports){
+},{"timers":25}],24:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -35495,7 +35550,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"./cjs/scheduler.development.js":17,"./cjs/scheduler.production.min.js":18,"_process":6}],20:[function(require,module,exports){
+},{"./cjs/scheduler.development.js":22,"./cjs/scheduler.production.min.js":23,"_process":11}],25:[function(require,module,exports){
 (function (setImmediate,clearImmediate){(function (){
 var nextTick = require('process/browser.js').nextTick;
 var apply = Function.prototype.apply;
@@ -35574,7 +35629,7 @@ exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate :
   delete immediateIds[id];
 };
 }).call(this)}).call(this,require("timers").setImmediate,require("timers").clearImmediate)
-},{"process/browser.js":6,"timers":20}],21:[function(require,module,exports){
+},{"process/browser.js":11,"timers":25}],26:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -35605,8 +35660,6 @@ function removeReact() {
   if (root_render) {
     root_render.unmount();
     root_render = null;
-  } else {
-    console.log("you stupid");
   }
 }
 function sendMessage(message) {
@@ -35619,11 +35672,51 @@ function sendMessage(message) {
 }
 function generateRoot() {
   var rot = (0, _qol.create)("div");
-  (0, _qol.addClass)(rot, "react-root");
+  (0, _qol.addClasses)(rot, ["react-root", "plus-ample"]);
   return rot;
 }
 
-},{"./qol":22,"@babel/runtime/helpers/interopRequireDefault":4,"react":15,"react-dom/client":9,"react/jsx-runtime":16}],22:[function(require,module,exports){
+},{"./qol":28,"@babel/runtime/helpers/interopRequireDefault":5,"react":20,"react-dom/client":14,"react/jsx-runtime":21}],27:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.handleMessages = handleMessages;
+exports.popup_pos = void 0;
+var _Popup = _interopRequireDefault(require("../components/Popup.jsx"));
+var _mainExt = require("../main-ext");
+var _extQol = require("./ext-qol");
+var popup_pos = exports.popup_pos = {
+  x: 300,
+  y: 500
+};
+var message_list = [{
+  "message": "toggle_popup",
+  "function": function _function(message) {
+    if (message.popup_visible) {
+      (0, _extQol.injectReact)(_Popup["default"], _mainExt.root, {
+        startx: popup_pos.x,
+        starty: popup_pos.y
+      });
+    } else {
+      (0, _extQol.removeReact)();
+    }
+  }
+}];
+function handleMessages() {
+  chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+    message_list.forEach(function (mess) {
+      if (message.message == mess["message"]) {
+        //{message, popup_visible}
+        mess["function"](message);
+      }
+    });
+  });
+}
+
+},{"../components/Popup.jsx":1,"../main-ext":2,"./ext-qol":26,"@babel/runtime/helpers/interopRequireDefault":5}],28:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35758,10 +35851,8 @@ var getPosEle = function getPosEle(element, size) {
   };
 };
 
-},{}],23:[function(require,module,exports){
-var css = ".bruh {\n  color: white;\n  font-size: 50px;\n}\n"; (require("browserify-css").createStyle(css, { "href": "styles\\App.css" }, { "insertAt": "bottom" })); module.exports = css;
-},{"browserify-css":5}],24:[function(require,module,exports){
-var css = ".popup {\n  position: absolute;\n  transform: translate(-50%,-100%);\n  font-size: 1em;\n  margin: 1em 0 3em;\n  color: #000;\n  background: #c7c7c7;\n  -webkit-border-radius: 10px;\n  -moz-border-radius: 10px;\n  border-radius: 10px;\n}\n.popup:after {\n  content: \"\";\n  position: absolute;\n  bottom: -10px;\n  /* value = - border-top-width - border-bottom-width */\n  left: 50%;\n  /* controls horizontal position */\n  transform: translate(-50%,0);\n  border-width: 10px 10px 0;\n  /* vary these values to change the angle of the vertex */\n  border-style: solid;\n  border-color: #c7c7c7 transparent;\n  /* reduce the damage in FF3.0 */\n  display: block;\n  width: 0;\n}\n.popup.top {\n  background: #c7c7c7;\n}\n.popup.top:after {\n  top: -10px;\n  /* value = - border-top-width - border-bottom-width */\n  left: 50%;\n  /* controls horizontal position */\n  transform: translate(-50%,0);\n  bottom: auto;\n  left: auto;\n  border-width: 0 10px 10px;\n  /* vary these values to change the angle of the vertex */\n  border-color: #c7c7c7 transparent;\n}\n.close-icon {\n  background-size: contain;\n  height: 0.75em;\n  width: 0.75em;\n}\n.top-bar {\n  display: flex;\n  justify-content: end;\n  background: #9c9c9c;\n  padding: 2px;\n  border-top-left-radius: 10px;\n}\n.popup-content {\n  padding: 10px;\n  padding-top: 5px;\n}\n"; (require("browserify-css").createStyle(css, { "href": "styles\\Popup.css" }, { "insertAt": "bottom" })); module.exports = css;
-},{"browserify-css":5}],25:[function(require,module,exports){
-var css = ".react-root {\n  position: absolute;\n  width: 100vw;\n  position: 100vh;\n  top: 0px;\n  left: 0px;\n}\n"; (require("browserify-css").createStyle(css, { "href": "styles\\Root.css" }, { "insertAt": "bottom" })); module.exports = css;
-},{"browserify-css":5}]},{},[3]);
+},{}],29:[function(require,module,exports){
+var css = ".popup {\n  position: absolute;\n  transform: translate(-50%,-100%);\n  font-size: 1em;\n  margin: 1em 0 3em;\n  color: #000;\n  background: #c7c7c7;\n  -webkit-border-radius: 10px;\n  -moz-border-radius: 10px;\n  border-radius: 10px;\n}\n.popup:after {\n  content: \"\";\n  position: absolute;\n  bottom: -10px;\n  /* value = - border-top-width - border-bottom-width */\n  left: 50%;\n  /* controls horizontal position */\n  transform: translate(-50%,0);\n  border-width: 10px 10px 0;\n  /* vary these values to change the angle of the vertex */\n  border-style: solid;\n  border-color: #c7c7c7 transparent;\n  /* reduce the damage in FF3.0 */\n  display: block;\n  width: 0;\n}\n.popup.top {\n  background: #c7c7c7;\n}\n.popup.top:after {\n  top: -10px;\n  /* value = - border-top-width - border-bottom-width */\n  left: 50%;\n  /* controls horizontal position */\n  transform: translate(-50%,0);\n  bottom: auto;\n  left: auto;\n  border-width: 0 10px 10px;\n  /* vary these values to change the angle of the vertex */\n  border-color: #c7c7c7 transparent;\n}\n.close-icon {\n  background-size: contain;\n  height: 0.6em;\n  width: 0.6em;\n}\n.top-bar {\n  display: flex;\n  justify-content: end;\n  background: #9c9c9c;\n  padding: 2px;\n  border-top-left-radius: 10px;\n  border-top-right-radius: 10px;\n  padding-right: 5px;\n}\n.popup-content {\n  padding: 10px;\n  padding-top: 5px;\n}\n"; (require("browserify-css").createStyle(css, { "href": "styles\\Popup.css" }, { "insertAt": "bottom" })); module.exports = css;
+},{"browserify-css":10}],30:[function(require,module,exports){
+var css = ".react-root {\n  position: absolute;\n  width: 100vw;\n  position: 100vh;\n  top: 0px;\n  left: 0px;\n  z-index: 100000;\n}\n#settings-react-root {\n  color: black;\n  width: 200px;\n}\n"; (require("browserify-css").createStyle(css, { "href": "styles\\Root.css" }, { "insertAt": "bottom" })); module.exports = css;
+},{"browserify-css":10}]},{},[2]);

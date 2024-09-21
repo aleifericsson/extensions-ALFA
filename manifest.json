@@ -28,8 +28,7 @@
         "matches":[
             "http://*/*",
             "https://*/*"
-        ],
-        "css": ["content.css"]
+        ]
       }
     ],
     "commands": {

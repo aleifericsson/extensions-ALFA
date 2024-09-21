@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { sendMessage } from "../scripts/ext-qol";
+import '../styles/Settings.css'
 
 export default function Settings({props}){
     const [popup_visible, set_visible] = useState(false);
@@ -11,14 +12,17 @@ export default function Settings({props}){
 
     return(
         <>
-            <label>
+            <div className="toggle-box">
                 <input
-                type="checkbox"
-                checked={popup_visible}
-                onChange={togglePopup}
-                />
-                <span>{popup_visible ? 'Hide Popup' : 'Show Popup'}</span>
-            </label>
+                    type="checkbox"
+                    id="show"
+                    className="checkbox"
+                    checked={popup_visible}
+                    onChange={togglePopup}
+                />                
+                <label className="switch" htmlFor="show"></label>
+                <div>Show Popup?</div>
+            </div>
         </>
     )
 }
